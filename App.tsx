@@ -2,30 +2,35 @@ import { StatusBar } from 'expo-status-bar';
 import {useState, useEffect} from 'react';
 import {TimerCountDownDisplay} from './TimerCountDownDisplay';
 import {TimerToggleButton} from './TimerToggleButton';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import { TimerModes } from './TimerModeDisplay';
 import {TimerModeDisplay} from './TimerModeDisplay';
 
-const FOCUS_TIME_MINUTES = 25*60*1000;
-const BREAK_TIME_MINUTES = 5*60*1000;
+
+const DEFAULT_FOCUS_TIME = '20';
+const DEFAULT_BREAK_TIME = '2';
+
+
 export default function App() {
-  const[timerCount, setTimerCount] = useState<number>(FOCUS_TIME_MINUTES);
+  const[timerCount, setTimerCount] = useState<number>(parseInt(focusTimeInput)*60*1000);
   const[timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(null);
   const[isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
   const[timerMode, setTimerMode] = useState<TimerModes>('Focus');
+  const [focusTimeInput, setFocusTimeInput] = useState('DEFAULT_FOCUS_TIME');
+  const [breakTimeInput, setBreakTimeInput] = useState('DEFAULT_BREAK_TIME');
 
   useEffect(() =>{
     if (timerCount ===0){
       if (timerMode ==='Focus'){
         setTimerMode('Break');
-        setTimerCount(BREAK_TIME_MINUTES); 
+        setTimerCount(parseInt(breakTimeInput)*60*1000); 
       } else{
         setTimerMode('Focus');
-        setTimerCount(FOCUS_TIME_MINUTES);
+        setTimerCount(parseInt(focusTimeInput)*60*1000);
       }
     }
 
-  }, [timerCount, timerMode]);
+  }, [timerCount, timerMode, focusTimeInput, breakTimeInput]);
 
   
 
@@ -41,6 +46,25 @@ export default function App() {
       clearInterval(timerInterval);
     }
   }
+
+  const handleBreakTimeChnage = (text: string) => {
+    setBreakTimeInput(text);
+  }
+
+  const handleFocusTimeChnage = (text: string) => {
+    setFocusTimeInput(text);
+  }
+
+  const handleSetTimes = () => {
+    setTimerCount(parseInt(focusTimeInput) * 60 * 1000);
+    setTimerMode('Focus');
+  }
+
+  const handleResetTimes = () => {
+    setFocusTimeInput(DEFAULT_FOCUS_TIME);
+    setBreakTimeInput(DEFAULT_BREAK_TIME);
+  }
+
   
   
   return (
@@ -49,10 +73,38 @@ export default function App() {
     }>
       <TimerModeDisplay timerMode={timerMode} />
       <StatusBar style="auto" />
+      <View style={styles.inputContainer}>
+        <Text>
+          Focus Time (minutes):
+        </Text>
+        <TextInput 
+        style={styles.input}
+        keyboardType="numeric"
+        value={focusTimeInput}
+        onChangeText={handleFocusTimeChnage}
+          />
+      </View>
+
+      <View>
+        <Text>
+          Break Time (minutes):
+        </Text>
+        <TextInput 
+        style={styles.input}
+        keyboardType="numeric"
+        value={breakTimeInput}
+        onChangeText={handleBreakTimeChnage}
+          />
+          <Button title="Set Times" onPress={handleSetTimes}/>
+      </View>
+
+      <Button title="Reset Times" onPress={handleResetTimes} />
+
       <TimerToggleButton 
       isTimerRunning={ isTimerRunning}
       startTimer={startTimer}
-      stopTimer={stopTimer} />
+      stopTimer={stopTimer} 
+      />
       <TimerCountDownDisplay timerCount={timerCount} />
     </View>
   );
@@ -64,5 +116,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#c95550',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
   },
 });
