@@ -12,12 +12,14 @@ const DEFAULT_BREAK_TIME = '2';
 
 
 export default function App() {
+  const [focusTimeInput, setFocusTimeInput] = useState(DEFAULT_FOCUS_TIME);
+  const [breakTimeInput, setBreakTimeInput] = useState(DEFAULT_BREAK_TIME);
   const[timerCount, setTimerCount] = useState<number>(parseInt(focusTimeInput)*60*1000);
   const[timerInterval, setTimerInterval] = useState<NodeJS.Timeout | null>(null);
   const[isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
   const[timerMode, setTimerMode] = useState<TimerModes>('Focus');
-  const [focusTimeInput, setFocusTimeInput] = useState('DEFAULT_FOCUS_TIME');
-  const [breakTimeInput, setBreakTimeInput] = useState('DEFAULT_BREAK_TIME');
+  const[showSettings, setShowSettings] = useState<boolean>(false);
+
 
   useEffect(() =>{
     if (timerCount ===0){
@@ -65,6 +67,10 @@ export default function App() {
     setBreakTimeInput(DEFAULT_BREAK_TIME);
   }
 
+  const toggleSettingsVisibility =() =>{
+    setShowSettings(prev => !prev);
+  }
+
   
   
   return (
@@ -73,32 +79,32 @@ export default function App() {
     }>
       <TimerModeDisplay timerMode={timerMode} />
       <StatusBar style="auto" />
-      <View style={styles.inputContainer}>
-        <Text>
-          Focus Time (minutes):
-        </Text>
-        <TextInput 
-        style={styles.input}
-        keyboardType="numeric"
-        value={focusTimeInput}
-        onChangeText={handleFocusTimeChnage}
-          />
-      </View>
+      
 
-      <View>
-        <Text>
-          Break Time (minutes):
-        </Text>
-        <TextInput 
-        style={styles.input}
-        keyboardType="numeric"
-        value={breakTimeInput}
-        onChangeText={handleBreakTimeChnage}
-          />
-          <Button title="Set Times" onPress={handleSetTimes}/>
-      </View>
+      <Button title="Settings" onPress={toggleSettingsVisibility} />
 
-      <Button title="Reset Times" onPress={handleResetTimes} />
+      {showSettings && (
+  <View style={styles.inputContainer}>
+    <Text>Focus Time (minutes):</Text>
+    <TextInput 
+      style={styles.input}
+      keyboardType="numeric"
+      value={focusTimeInput}
+      onChangeText={handleFocusTimeChnage}
+    />
+
+    <Text>Break Time (minutes):</Text>
+    <TextInput 
+      style={styles.input}
+      keyboardType="numeric"
+      value={breakTimeInput}
+      onChangeText={handleBreakTimeChnage}
+    />
+
+    <Button title="Set Times" onPress={handleSetTimes}/>
+    <Button title="Reset Times" onPress={handleResetTimes} />
+  </View>
+)}
 
       <TimerToggleButton 
       isTimerRunning={ isTimerRunning}
