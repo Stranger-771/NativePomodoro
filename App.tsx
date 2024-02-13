@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import {useState, useEffect} from 'react';
 import {TimerCountDownDisplay} from './TimerCountDownDisplay';
 import {TimerToggleButton} from './TimerToggleButton';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
 import { TimerModes } from './TimerModeDisplay';
 import {TimerModeDisplay} from './TimerModeDisplay';
 
@@ -83,7 +83,12 @@ export default function App() {
       <StatusBar style="auto" />
       
 
-      <Button title="Settings" onPress={toggleSettingsVisibility} />
+      <TouchableOpacity 
+      style={styles.button} 
+      onPress={toggleSettingsVisibility}
+       >
+        <Text style={styles.buttonText}>⚙️</Text>
+       </TouchableOpacity>
 
       {showSettings && (
   <View style={styles.inputContainer}>
@@ -103,8 +108,12 @@ export default function App() {
       onChangeText={handleBreakTimeChnage}
     />
 
-    <Button title="Set Times" onPress={handleSetTimes}/>
-    <Button title="Reset Times" onPress={handleResetTimes} />
+    <TouchableOpacity  style={styles.button} onPress={handleSetTimes}>
+      <Text style={styles.buttonText}>Set Time</Text>
+    </TouchableOpacity>
+    <TouchableOpacity  style={styles.button} onPress={handleResetTimes} >
+      <Text style={styles.buttonText}>Reset Time</Text>
+    </TouchableOpacity>
   </View>
 )}
 
@@ -126,13 +135,43 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inputContainer: {
-    marginBottom: 20,
+    marginBottom: 10,
   },
   input: {
-    height: 40,
-    borderColor: 'gray',
+    backgroundColor: 'white',
+    height: 30,
+    borderColor: 'Black',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
+    borderRadius: 5,
+    width: 100,
+    textAlign: 'center',
+    marginLeft: 20,
+  
+  },
+  button:{
+    backgroundColor: '#ff5722',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 25,
+    marginVertical: 3,
+    elevation: 3,
+    //for Ios
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+  },
+
+  buttonText:{
+    color: 'white',
+    fontSize: 16,
+    textAlign: 'center',
+    fontWeight: 'bold',
   },
 });

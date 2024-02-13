@@ -22,7 +22,7 @@ export const TimerCountDownDisplay: React.FC<Props> = ({ timerCount }) => {
 const Styles = StyleSheet.create({
   timerCountDownText: {
     fontSize: 40,
-    fontWeight: '800',
+    fontWeight: '700',
     color: 'white',
   },
 });

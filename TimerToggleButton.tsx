@@ -18,7 +18,7 @@ export const TimerToggleButton: React.FC<Props> =({
     return (
         <Pressable onPress={isTimerRunning ? stopTimer : startTimer}>
             <View style= {styles.container}>
-                <FontAwesome name={isTimerRunning ? 'pause' : 'play'} size ={150} style={styles.icon}/>
+                <FontAwesome name={isTimerRunning ? 'pause' : 'play'} size ={120} style={styles.icon}/>
             </View>
         </Pressable>
     )
@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     },
     container:{
         borderWidth:5,
-        width:250,
-        height:250,
+        width:220,
+        height:220,
         borderRadius:125,
         justifyContent: 'center',
         borderColor: 'white',
