@@ -60,11 +60,13 @@ export default function App() {
   const handleSetTimes = () => {
     setTimerCount(parseInt(focusTimeInput) * 60 * 1000);
     setTimerMode('Focus');
+    setShowSettings(false);
   }
 
   const handleResetTimes = () => {
     setFocusTimeInput(DEFAULT_FOCUS_TIME);
     setBreakTimeInput(DEFAULT_BREAK_TIME);
+    setShowSettings(false);
   }
 
   const toggleSettingsVisibility =() =>{
