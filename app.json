@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/pomo-logo.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.stranger_771.pomodoro"

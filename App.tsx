@@ -66,6 +66,7 @@ export default function App() {
   const handleResetTimes = () => {
     setFocusTimeInput(DEFAULT_FOCUS_TIME);
     setBreakTimeInput(DEFAULT_BREAK_TIME);
+    setTimerCount(parseInt(DEFAULT_FOCUS_TIME) * 60 * 1000);  
     setShowSettings(false);
   }
 
