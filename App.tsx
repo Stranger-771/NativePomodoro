@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import {useState, useEffect} from 'react';
 import {TimerCountDownDisplay} from './TimerCountDownDisplay';
 import {TimerToggleButton} from './TimerToggleButton';
-import { StyleSheet, Text, View, Button, TouchableOpacity, TextInput } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from 'react-native';
 import { TimerModes } from './TimerModeDisplay';
 import {TimerModeDisplay} from './TimerModeDisplay';
 
@@ -19,6 +19,8 @@ export default function App() {
   const[isTimerRunning, setIsTimerRunning] = useState<boolean>(false);
   const[timerMode, setTimerMode] = useState<TimerModes>('Focus');
   const[showSettings, setShowSettings] = useState<boolean>(false);
+  const [backgroundColor, setBackgroundColor] = useState('#d95550');
+  const [colorInput, setColorInput] = useState('');
 
 
   useEffect(() =>{
@@ -73,6 +75,20 @@ export default function App() {
   const toggleSettingsVisibility =() =>{
     setShowSettings(prev => !prev);
   }
+  //fuction to handle the background color change
+  const handleBackgroundColorChange = (text: string) => {
+    setColorInput(text);
+  };
+
+  // Function to validate and set the new color
+  const handleSetColor = () => {
+    const validColorRegex = /^#(?:[0-9a-fA-F]{3}){1,2}$/;
+    if (validColorRegex.test(colorInput)) {
+      setBackgroundColor(colorInput);
+    } else {
+      alert('Please enter a valid color or hex code.');
+    }
+  };
 
   
   
@@ -109,11 +125,23 @@ export default function App() {
       onChangeText={handleBreakTimeChnage}
     />
 
-    <TouchableOpacity  style={styles.button} onPress={handleSetTimes}>
+    {/* Background Color Selection */}
+          <Text>Background Color (name or hex):</Text>
+          <TextInput 
+            style={styles.input}
+            value={colorInput}
+            onChangeText={handleBackgroundColorChange}
+            placeholder="e.g., '#ffffff'"
+            placeholderTextColor="#888"/>
+
+    <TouchableOpacity  style={styles.button} onPress={handleSetTimes }>
       <Text style={styles.buttonText}>Set Time</Text>
     </TouchableOpacity>
     <TouchableOpacity  style={styles.button} onPress={handleResetTimes} >
       <Text style={styles.buttonText}>Reset Time</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.button} onPress={() => handleBackgroundColorChange(colorInput)}>
+      <Text style={styles.buttonText}>Set Color</Text>
     </TouchableOpacity>
   </View>
 )}
@@ -141,7 +169,7 @@ const styles = StyleSheet.create({
   input: {
     backgroundColor: 'white',
     height: 30,
-    borderColor: 'Black',
+    borderColor: 'black',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
@@ -175,4 +203,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontWeight: 'bold',
   },
+  settingsContainer: {
+    margin: 20,
+  }
 });
