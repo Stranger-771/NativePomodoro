@@ -20,6 +20,7 @@ export default function App() {
   const[timerMode, setTimerMode] = useState<TimerModes>('Focus');
   const[showSettings, setShowSettings] = useState<boolean>(false);
   const [userBackgroundColor, setUserBackgroundColor] = useState<string>('');
+  const [validationError, setValidationError] = useState<string>('');
 
 
   useEffect(() =>{
@@ -76,10 +77,22 @@ export default function App() {
   }
   //fuction to handle the background color change
   const handleBackgroundColorChange = (text: string) => {
-    setUserBackgroundColor(text);
+    validateAndSetBackgroundColor(text);
   }
+  
 
-  // Function to validate and set the new color
+   // Validate user input as hex color or text color
+   const validateAndSetBackgroundColor = (text: string) => {
+   const isValidHex = /^#[0-9A-Fa-f]{6}$/i.test(text);
+    const isValidColorName = /^(red|green|blue)$/i.test(text.toLowerCase()); 
+
+   if (isValidHex || isValidColorName || text === '') {
+     setUserBackgroundColor(text);
+     setValidationError('');
+   } else {
+     setValidationError('Invalid color');
+   }
+ }
 
   
   
@@ -123,6 +136,10 @@ export default function App() {
             value={userBackgroundColor}
             onChangeText={handleBackgroundColorChange}
           />
+      {/* Validation Error Message */}
+      {validationError !== '' && (
+            <Text style={{ color: 'red' }}>{validationError}</Text>
+          )}
 
     <TouchableOpacity  style={styles.button} onPress={handleSetTimes }>
       <Text style={styles.buttonText}>Set Time</Text>
